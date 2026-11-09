@@ -74,6 +74,19 @@ Route::get('/setup-showcase', function () {
             ]
         );
 
+        // Test dashboard queries
+        $dashboardErrors = [];
+        try { \Modules\Customer\Models\Customer::count(); } catch (\Throwable $e) { $dashboardErrors['Customer'] = $e->getMessage(); }
+        try { \Modules\Products\Models\Product::count(); } catch (\Throwable $e) { $dashboardErrors['Product'] = $e->getMessage(); }
+        try { \Modules\OrderManagement\Models\Order::count(); } catch (\Throwable $e) { $dashboardErrors['Order'] = $e->getMessage(); }
+        try {
+            \Illuminate\Support\Facades\DB::table('category_products')
+                ->join('categories', 'categories.id', '=', 'category_products.category_id')
+                ->whereNull('categories.parent_id')
+                ->select('categories.name as category', \Illuminate\Support\Facades\DB::raw('count(*) as count'))
+                ->groupBy('categories.name')->get();
+        } catch (\Throwable $e) { $dashboardErrors['categories'] = $e->getMessage(); }
+
         return response()->json([
             'status' => 'success',
             'message' => 'Showcase database migrated & seeded successfully!',
@@ -87,6 +100,7 @@ Route::get('/setup-showcase', function () {
                 'password' => 'Manager@123',
                 'is_super_admin' => $manager->is_super_admin,
             ],
+            'dashboard_checks' => empty($dashboardErrors) ? 'All dashboard queries passed' : $dashboardErrors,
             'login_url' => url('/login')
         ]);
     } catch (\Throwable $e) {
