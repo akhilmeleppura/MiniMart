@@ -1,0 +1,22 @@
+{
+    "Category": true,
+    "Base": true,
+    "UserPermission": true,
+    "Dashboard": true,
+    "Products": true,
+    "Api": true,
+    "WebConfigurationManagement": true,
+    "CMS": true,
+    "Customer": true,
+    "Cart": true,
+    "StoreManagement": true,
+    "OrderManagement": true,
+    "ProductAttributes": true,
+    "ShippingMethode": true,
+    "PaymentMethod": true,
+    "NewsLetter": true,
+    "PriceRuleManagement": true,
+    "URLRewrite": true,
+    "TaxManagement": true,
+    "PaymentManagement": true
+}

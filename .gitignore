@@ -13,7 +13,7 @@
 .phpactor.json
 .phpunit.result.cache
 Homestead.json
-modules_statuses.json
+# modules_statuses.json
 Homestead.yaml
 auth.json
 npm-debug.log
