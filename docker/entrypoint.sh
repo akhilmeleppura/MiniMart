@@ -5,6 +5,7 @@ set -e
 if [ "$RUN_MIGRATIONS" = "true" ]; then
     echo "Running database migrations..."
     php artisan migrate --force
+    php artisan module:migrate --force || true
 fi
 
 # Run seeders automatically for showcase demos

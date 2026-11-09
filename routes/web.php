@@ -31,6 +31,15 @@ Route::get('switch-language/{locale}', function ($locale) {
 Route::get('/setup-showcase', function () {
     try {
         \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        \Illuminate\Support\Facades\Artisan::call('module:migrate', ['--force' => true]);
+
+        // Safety check: ensure is_super_admin column exists
+        if (!\Illuminate\Support\Facades\Schema::hasColumn('users', 'is_super_admin')) {
+            \Illuminate\Support\Facades\Schema::table('users', function (\Illuminate\Database\Schema\Blueprint $table) {
+                $table->boolean('is_super_admin')->default(false)->after('email');
+            });
+        }
+
         \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
         
         $admin = \App\Models\User::updateOrCreate(
