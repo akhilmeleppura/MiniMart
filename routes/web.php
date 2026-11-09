@@ -33,16 +33,22 @@ Route::get('/setup-showcase', function () {
         // Run standard migrations
         \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
 
-        // Run module migrations across all active modules
-        try {
-            \Illuminate\Support\Facades\Artisan::call('module:migrate', ['--force' => true]);
-        } catch (\Throwable $e) {}
-
         // Direct DB alter safety check: ensure is_super_admin column exists
         try {
             $hasColumn = \Illuminate\Support\Facades\DB::select("SHOW COLUMNS FROM `users` LIKE 'is_super_admin'");
             if (empty($hasColumn)) {
                 \Illuminate\Support\Facades\DB::statement("ALTER TABLE `users` ADD COLUMN `is_super_admin` TINYINT(1) DEFAULT 0 AFTER `email`");
+            }
+        } catch (\Throwable $e) {}
+
+        // Run module migrations across each active module without interactive prompts
+        try {
+            $modules = \Nwidart\Modules\Facades\Module::allEnabled();
+            foreach ($modules as $module) {
+                \Illuminate\Support\Facades\Artisan::call('module:migrate', [
+                    'module' => $module->getName(),
+                    '--force' => true
+                ]);
             }
         } catch (\Throwable $e) {}
 
