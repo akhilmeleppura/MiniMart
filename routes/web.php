@@ -27,4 +27,54 @@ Route::get('switch-language/{locale}', function ($locale) {
     return Redirect::back();
 })->name('switch.language');
 
+// One-click setup/seed route for showcase demos
+Route::get('/setup-showcase', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+        
+        $admin = \App\Models\User::updateOrCreate(
+            ['email' => 'admin@gmail.com'],
+            [
+                'name' => 'Supreme Admin',
+                'is_super_admin' => 1,
+                'password' => \Illuminate\Support\Facades\Hash::make('Admin@123'),
+                'email_verified_at' => now(),
+            ]
+        );
+
+        $manager = \App\Models\User::updateOrCreate(
+            ['email' => 'manager@gmail.com'],
+            [
+                'name' => 'Store Manager',
+                'is_super_admin' => 0,
+                'password' => \Illuminate\Support\Facades\Hash::make('Manager@123'),
+                'email_verified_at' => now(),
+            ]
+        );
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Showcase database migrated & seeded successfully!',
+            'supreme_admin' => [
+                'email' => 'admin@gmail.com',
+                'password' => 'Admin@123',
+                'is_super_admin' => $admin->is_super_admin,
+            ],
+            'medium_role' => [
+                'email' => 'manager@gmail.com',
+                'password' => 'Manager@123',
+                'is_super_admin' => $manager->is_super_admin,
+            ],
+            'login_url' => url('/login')
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'status' => 'error',
+            'error' => $e->getMessage(),
+            'trace' => $e->getFile() . ':' . $e->getLine()
+        ], 500);
+    }
+});
+
 require __DIR__.'/auth.php';
