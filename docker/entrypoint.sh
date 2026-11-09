@@ -1,10 +1,16 @@
 #!/bin/bash
-set -e
+
+# Ensure storage directories and symlink exist
+mkdir -p storage/framework/{sessions,views,cache} bootstrap/cache
+chown -R www-data:www-data storage bootstrap/cache || true
+chmod -R 775 storage bootstrap/cache || true
+
+php artisan storage:link || true
 
 # Run migrations automatically
 if [ "$RUN_MIGRATIONS" = "true" ]; then
     echo "Running database migrations..."
-    php artisan migrate --force
+    php artisan migrate --force || true
     php artisan migrate --path=Modules/Customer/database/migrations --force || true
     php artisan migrate --path=Modules/Category/database/migrations --force || true
     php artisan migrate --path=Modules/Products/database/migrations --force || true
@@ -33,13 +39,9 @@ if [ "$RUN_SEEDERS" = "true" ]; then
     php artisan db:seed --force || true
 fi
 
-# Ensure storage directories and symlink exist
-php artisan storage:link || true
-
-# Clear cached configuration to ensure all dynamically discovered modules are loaded
+# Clear all caches so dynamic modules and hint paths are clean
 php artisan optimize:clear || true
 
 # Start Apache in foreground
+echo "Starting Apache..."
 exec apache2-foreground
-
-

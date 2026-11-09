@@ -32,11 +32,19 @@ class AppServiceProvider extends ServiceProvider
         ];
 
         foreach ($modules as $mod) {
-            $path = base_path("Modules/{$mod}/resources/views");
-            if (is_dir($path)) {
-                $this->loadViewsFrom($path, strtolower($mod));
-                $this->loadViewsFrom($path, $mod);
-                \Illuminate\Support\Facades\View::addLocation($path);
+            $lower = strtolower($mod);
+            $paths = array_filter([
+                base_path("Modules/{$mod}/resources/views"),
+                resource_path("views/modules/{$lower}"),
+                resource_path("views/modules/{$mod}"),
+            ], 'is_dir');
+
+            if (!empty($paths)) {
+                $this->loadViewsFrom($paths, $lower);
+                $this->loadViewsFrom($paths, $mod);
+                foreach ($paths as $p) {
+                    \Illuminate\Support\Facades\View::addLocation($p);
+                }
             }
         }
 
