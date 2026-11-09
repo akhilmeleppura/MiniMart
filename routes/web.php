@@ -41,6 +41,25 @@ Route::get('/setup-showcase', function () {
             }
         } catch (\Throwable $e) {}
 
+        // Ensure category_products table exists (fixes dashboard category widget query)
+        try {
+            $hasCatProd = \Illuminate\Support\Facades\DB::select("SHOW TABLES LIKE 'category_products'");
+            if (empty($hasCatProd)) {
+                \Illuminate\Support\Facades\DB::statement("
+                    CREATE TABLE IF NOT EXISTS `category_products` (
+                        `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+                        `category_id` bigint unsigned DEFAULT NULL,
+                        `product_id` bigint unsigned DEFAULT NULL,
+                        `created_at` timestamp NULL DEFAULT NULL,
+                        `updated_at` timestamp NULL DEFAULT NULL,
+                        PRIMARY KEY (`id`),
+                        KEY `category_products_category_id_foreign` (`category_id`),
+                        KEY `category_products_product_id_foreign` (`product_id`)
+                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+                ");
+            }
+        } catch (\Throwable $e) {}
+
         // Run migrations for all modules directly using absolute path to guarantee execution
         $modules = [
             'StoreManagement',

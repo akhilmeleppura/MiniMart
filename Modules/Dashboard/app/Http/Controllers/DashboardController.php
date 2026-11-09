@@ -34,9 +34,13 @@ class DashboardController extends Controller
             DB::raw('count(*) as count') )
             ->groupBy('date')->orderBy('date')->get();
 
-        $productsCategory = DB::table('category_products')
-            ->join('categories', 'categories.id', '=', 'category_products.category_id')->whereNull('categories.parent_id')
-            ->select('categories.name as category', DB::raw('count(*) as count'))->groupBy('categories.name')->get();
+        try {
+            $productsCategory = DB::table('category_products')
+                ->join('categories', 'categories.id', '=', 'category_products.category_id')->whereNull('categories.parent_id')
+                ->select('categories.name as category', DB::raw('count(*) as count'))->groupBy('categories.name')->get();
+        } catch (\Throwable $e) {
+            $productsCategory = collect();
+        }
 
         $recentOrders = Order::with('customerData')->orderBy('created_at', 'desc')->limit(5)->get();
 
