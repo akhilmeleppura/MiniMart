@@ -87,21 +87,33 @@ Route::get('/setup-showcase', function () {
                 ->groupBy('categories.name')->get();
         } catch (\Throwable $e) { $dashboardErrors['categories'] = $e->getMessage(); }
 
+        // Test login simulation
+        $loginAttempt = false;
+        $loginError = null;
+        try {
+            $loginAttempt = \Illuminate\Support\Facades\Auth::attempt(['email' => 'admin@gmail.com', 'password' => 'Admin@123']);
+        } catch (\Throwable $e) {
+            $loginError = $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine();
+        }
+
+        // Test dashboard view render
+        $viewError = null;
+        try {
+            $controller = new \Modules\Dashboard\Http\Controllers\DashboardController();
+            $view = $controller->index();
+            $rendered = $view->render();
+        } catch (\Throwable $e) {
+            $viewError = $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine();
+        }
+
         return response()->json([
             'status' => 'success',
-            'message' => 'Showcase database migrated & seeded successfully!',
-            'supreme_admin' => [
-                'email' => 'admin@gmail.com',
-                'password' => 'Admin@123',
-                'is_super_admin' => $admin->is_super_admin,
-            ],
-            'medium_role' => [
-                'email' => 'manager@gmail.com',
-                'password' => 'Manager@123',
-                'is_super_admin' => $manager->is_super_admin,
-            ],
-            'dashboard_checks' => empty($dashboardErrors) ? 'All dashboard queries passed' : $dashboardErrors,
-            'login_url' => url('/login')
+            'login_attempt' => $loginAttempt,
+            'login_error' => $loginError,
+            'dashboard_view_error' => $viewError,
+            'session_driver' => config('session.driver'),
+            'session_table_exists' => \Illuminate\Support\Facades\Schema::hasTable('sessions'),
+            'dashboard_queries' => empty($dashboardErrors) ? 'All passed' : $dashboardErrors,
         ]);
     } catch (\Throwable $e) {
         return response()->json([
