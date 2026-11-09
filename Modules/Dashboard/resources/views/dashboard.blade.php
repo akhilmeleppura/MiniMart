@@ -279,7 +279,11 @@
     }
 
     function buildOrdersChartOptions(categories, data) {
+        var isDark = (document.documentElement.getAttribute('data-bs-theme') === 'dark' || document.body.classList.contains('dark-mode'));
         return {
+            theme: {
+                mode: isDark ? 'dark' : 'light'
+            },
             series: [{
                 name: 'Orders',
                 data: data
@@ -384,7 +388,11 @@
         return item.count;
     });
 
+    var isDarkTheme = (document.documentElement.getAttribute('data-bs-theme') === 'dark' || document.body.classList.contains('dark-mode'));
     var options = {
+        theme: {
+            mode: isDarkTheme ? 'dark' : 'light'
+        },
         chart: {
             type: 'pie',
             height: 350
@@ -402,6 +410,19 @@
 
     var chart = new ApexCharts(document.querySelector("#products_category_chart"), options);
     chart.render();
+
+    // Re-render ApexCharts on theme change
+    $('#minimartThemeToggle').on('click', function() {
+        setTimeout(function() {
+            var isDark = (document.documentElement.getAttribute('data-bs-theme') === 'dark' || document.body.classList.contains('dark-mode'));
+            if (ordersChart) {
+                ordersChart.updateOptions({ theme: { mode: isDark ? 'dark' : 'light' } });
+            }
+            if (chart) {
+                chart.updateOptions({ theme: { mode: isDark ? 'dark' : 'light' } });
+            }
+        }, 150);
+    });
 
 
 

@@ -24,7 +24,7 @@ $storeId = session('store_id');
             <!--begin::Left-->
             <div class="d-flex align-items-stretch mr-2">
                 <!--begin::Page Title-->
-                <h3 class="d-none text-light d-lg-flex align-items-center mr-10 mb-0">@yield('page-title')</h3>
+                <h3 class="d-none header-page-title d-lg-flex align-items-center mr-10 mb-0 fw-bold">@yield('page-title')</h3>
                 <!--end::Page Title-->
             </div>
             <!--end::Left-->
@@ -48,7 +48,7 @@ $storeId = session('store_id');
             <!--begin::Theme Switcher-->
             <div class="d-flex align-items-center me-2">
                 <button type="button" id="minimartThemeToggle" class="btn btn-icon btn-custom btn-active-light btn-active-color-primary w-35px h-35px" title="Toggle Theme">
-                    <i class="ki-outline ki-night-day fs-2 text-white"></i>
+                    <i class="ki-outline ki-night-day fs-2 theme-toggle-icon"></i>
                 </button>
             </div>
             <!--end::Theme Switcher-->
