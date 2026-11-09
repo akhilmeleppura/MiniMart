@@ -45,7 +45,20 @@ class DashboardController extends Controller
         $recentOrders = Order::with('customerData')->orderBy('created_at', 'desc')->limit(5)->get();
 
 
-        return view('dashboard::dashboard', compact(
+        if (view()->exists('dashboard::dashboard')) {
+            return view('dashboard::dashboard', compact(
+                'totalUsers',
+                'totalProducts',
+                'totalOrders',
+                'ordersByMonth',
+                'ordersByDate',
+                'productsCategory',
+                'recentOrders',
+                'newCustomers',
+            ));
+        }
+
+        return view('dashboard', compact(
             'totalUsers',
             'totalProducts',
             'totalOrders',

@@ -21,15 +21,22 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
-        // Register view hint paths for all modules in case module view loader didn't run
-        $moduleDirectories = glob(base_path('Modules/*'), GLOB_ONLYDIR);
-        foreach ($moduleDirectories as $dir) {
-            $name = basename($dir);
-            $lower = strtolower($name);
-            $viewsDir = $dir . '/resources/views';
-            if (is_dir($viewsDir)) {
-                \Illuminate\Support\Facades\View::addNamespace($lower, $viewsDir);
-                \Illuminate\Support\Facades\View::addNamespace($name, $viewsDir);
+        // Register view locations & namespaces for all modules
+        $modules = [
+            'Base', 'Dashboard', 'Products', 'Category', 'Customer',
+            'OrderManagement', 'CMS', 'StoreManagement', 'TaxManagement',
+            'ShippingMethode', 'PaymentManagement', 'PaymentMethod',
+            'PriceRuleManagement', 'ProductAttributes', 'Cart',
+            'UserPermission', 'WebConfigurationManagement', 'URLRewrite',
+            'NewsLetter', 'Api'
+        ];
+
+        foreach ($modules as $mod) {
+            $path = base_path("Modules/{$mod}/resources/views");
+            if (is_dir($path)) {
+                $this->loadViewsFrom($path, strtolower($mod));
+                $this->loadViewsFrom($path, $mod);
+                \Illuminate\Support\Facades\View::addLocation($path);
             }
         }
 
