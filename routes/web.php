@@ -41,16 +41,38 @@ Route::get('/setup-showcase', function () {
             }
         } catch (\Throwable $e) {}
 
-        // Run module migrations across each active module without interactive prompts
-        try {
-            $modules = \Nwidart\Modules\Facades\Module::allEnabled();
-            foreach ($modules as $module) {
-                \Illuminate\Support\Facades\Artisan::call('module:migrate', [
-                    'module' => $module->getName(),
+        // Run migrations for all modules directly by path to guarantee all tables exist
+        $migrationPaths = [
+            'Modules/Customer/database/migrations',
+            'Modules/Category/database/migrations',
+            'Modules/Products/database/migrations',
+            'Modules/OrderManagement/database/migrations',
+            'Modules/CMS/database/migrations',
+            'Modules/StoreManagement/database/migrations',
+            'Modules/TaxManagement/database/migrations',
+            'Modules/ShippingMethode/database/migrations',
+            'Modules/PaymentManagement/database/migrations',
+            'Modules/PaymentMethod/database/migrations',
+            'Modules/PriceRuleManagement/database/migrations',
+            'Modules/ProductAttributes/database/migrations',
+            'Modules/Cart/database/migrations',
+            'Modules/UserPermission/database/migrations',
+            'Modules/WebConfigurationManagement/database/migrations',
+            'Modules/URLRewrite/database/migrations',
+            'Modules/NewsLetter/database/migrations',
+            'Modules/Dashboard/database/migrations',
+            'Modules/Base/database/migrations',
+            'Modules/Api/database/migrations',
+        ];
+
+        foreach ($migrationPaths as $path) {
+            try {
+                \Illuminate\Support\Facades\Artisan::call('migrate', [
+                    '--path' => $path,
                     '--force' => true
                 ]);
-            }
-        } catch (\Throwable $e) {}
+            } catch (\Throwable $e) {}
+        }
 
         \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
         
