@@ -148,6 +148,12 @@ Route::get('/setup-showcase', function () {
         // Test dashboard view render
         $viewError = null;
         try {
+            // Register view namespace if missing
+            if (!\Illuminate\Support\Facades\View::exists('dashboard::dashboard')) {
+                \Illuminate\Support\Facades\View::addNamespace('dashboard', base_path('Modules/Dashboard/resources/views'));
+                \Illuminate\Support\Facades\View::addNamespace('base', base_path('Modules/Base/resources/views'));
+            }
+
             $controller = new \Modules\Dashboard\Http\Controllers\DashboardController();
             $view = $controller->index();
             $rendered = $view->render();
