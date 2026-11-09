@@ -30,15 +30,21 @@ Route::get('switch-language/{locale}', function ($locale) {
 // One-click setup/seed route for showcase demos
 Route::get('/setup-showcase', function () {
     try {
+        // Run standard migrations
         \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
-        \Illuminate\Support\Facades\Artisan::call('module:migrate', ['--force' => true]);
 
-        // Safety check: ensure is_super_admin column exists
-        if (!\Illuminate\Support\Facades\Schema::hasColumn('users', 'is_super_admin')) {
-            \Illuminate\Support\Facades\Schema::table('users', function (\Illuminate\Database\Schema\Blueprint $table) {
-                $table->boolean('is_super_admin')->default(false)->after('email');
-            });
-        }
+        // Run module migrations across all active modules
+        try {
+            \Illuminate\Support\Facades\Artisan::call('module:migrate', ['--force' => true]);
+        } catch (\Throwable $e) {}
+
+        // Direct DB alter safety check: ensure is_super_admin column exists
+        try {
+            $hasColumn = \Illuminate\Support\Facades\DB::select("SHOW COLUMNS FROM `users` LIKE 'is_super_admin'");
+            if (empty($hasColumn)) {
+                \Illuminate\Support\Facades\DB::statement("ALTER TABLE `users` ADD COLUMN `is_super_admin` TINYINT(1) DEFAULT 0 AFTER `email`");
+            }
+        } catch (\Throwable $e) {}
 
         \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
         
