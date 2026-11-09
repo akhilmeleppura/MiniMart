@@ -1,6 +1,6 @@
 FROM php:8.2-apache
 
-# Install system dependencies
+# Install system dependencies & PHP extensions required for Laravel 11
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -9,41 +9,45 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
+    libxml2-dev \
     nodejs \
     npm \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_mysql zip
+    && docker-php-ext-install gd pdo pdo_mysql zip bcmath xml \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Enable Apache rewrite
+# Enable Apache rewrite module
 RUN a2enmod rewrite
+
+# Configure Apache port and DocumentRoot
+ENV PORT 80
+RUN sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
 
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy project files
+# Copy composer binary from official image
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# Copy application files
 COPY . .
 
-# Install Composer
-RUN curl -sS https://getcomposer.org/installer | php \
-    && mv composer.phar /usr/local/bin/composer
-
 # Install PHP dependencies
-RUN composer install --optimize-autoloader --no-interaction
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Install Node dependencies and build assets
-RUN npm install
+# Build frontend assets
+RUN npm ci || npm install
 RUN npm run build
 
-# Fix permissions
-RUN chown -R www-data:www-data storage bootstrap/cache
+# Set permissions for Laravel
+RUN mkdir -p storage/framework/{sessions,views,cache} bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
-# Set Apache document root to Laravel public folder
-RUN sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
+# Setup entrypoint script
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Expose port
 EXPOSE 80
 
-# Start Laravel
-CMD php artisan migrate --force && \
-    php artisan db:seed --force && \
-    apache2-foreground
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
