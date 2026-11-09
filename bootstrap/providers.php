@@ -2,6 +2,7 @@
 
 return [
     App\Providers\AppServiceProvider::class,
+    Nwidart\Modules\LaravelModulesServiceProvider::class,
     Spatie\Permission\PermissionServiceProvider::class,
     Modules\Dashboard\Providers\DashboardServiceProvider::class,
     Modules\Base\Providers\BaseServiceProvider::class,
