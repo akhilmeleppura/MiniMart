@@ -110,20 +110,46 @@
                     </div>
                 @endif
 
-                <!-- Showcase Demo Credentials Helper Badge -->
-                <div class="mb-6 p-4 rounded-2xl bg-gradient-to-r from-blue-900/40 to-teal-900/30 border border-blue-500/30 backdrop-blur-sm">
-                    <div class="flex items-center justify-between mb-2">
+                <!-- Showcase Demo Credentials Helper Badges (Supreme Admin & Medium Role) -->
+                <div class="mb-6 p-4 rounded-2xl bg-gradient-to-r from-blue-950/60 via-slate-900/60 to-teal-950/40 border border-blue-500/30 backdrop-blur-md shadow-xl">
+                    <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-800/80">
                         <div class="flex items-center gap-2">
                             <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
-                            <span class="text-xs font-bold uppercase tracking-wider text-teal-300">Live Showcase Demo</span>
+                            <span class="text-xs font-bold uppercase tracking-wider text-teal-300">Live Showcase Roles</span>
                         </div>
-                        <button type="button" id="fillDemoCredentials" class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-blue-600/30 hover:bg-blue-600/60 text-blue-300 border border-blue-500/30 transition-all duration-200">
-                            Auto-fill Login
-                        </button>
+                        <span class="text-[11px] text-slate-400">Click below to auto-fill</span>
                     </div>
-                    <div class="text-xs text-slate-300 space-y-1">
-                        <div><strong class="text-slate-400">Email:</strong> <span class="font-mono text-white">admin@gmail.com</span></div>
-                        <div><strong class="text-slate-400">Password:</strong> <span class="font-mono text-white">Admin@123</span></div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <!-- Supreme Admin Card -->
+                        <div class="p-2.5 rounded-xl bg-slate-900/90 border border-blue-500/30 flex flex-col justify-between hover:border-blue-400/60 transition">
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-[11px] font-bold text-blue-400 uppercase tracking-wide">Supreme Admin</span>
+                                    <span class="text-[10px] px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-300 font-semibold">Full Access</span>
+                                </div>
+                                <div class="text-[11px] text-slate-300 font-mono">admin@gmail.com</div>
+                                <div class="text-[11px] text-slate-400 font-mono">Admin@123</div>
+                            </div>
+                            <button type="button" id="fillSupremeAdmin" class="mt-2 text-xs font-bold py-1.5 px-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white shadow transition-all duration-150">
+                                Login as Supreme Admin
+                            </button>
+                        </div>
+
+                        <!-- Medium Role: Store Manager Card -->
+                        <div class="p-2.5 rounded-xl bg-slate-900/90 border border-teal-500/30 flex flex-col justify-between hover:border-teal-400/60 transition">
+                            <div>
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="text-[11px] font-bold text-teal-400 uppercase tracking-wide">Store Manager</span>
+                                    <span class="text-[10px] px-1.5 py-0.2 rounded bg-teal-500/20 text-teal-300 font-semibold">Medium Role</span>
+                                </div>
+                                <div class="text-[11px] text-slate-300 font-mono">manager@gmail.com</div>
+                                <div class="text-[11px] text-slate-400 font-mono">Manager@123</div>
+                            </div>
+                            <button type="button" id="fillMediumRole" class="mt-2 text-xs font-bold py-1.5 px-2 rounded-lg bg-teal-600 hover:bg-teal-500 text-white shadow transition-all duration-150">
+                                Login as Store Manager
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -204,14 +230,25 @@
     </div>
 
     <script>
-        document.getElementById('fillDemoCredentials')?.addEventListener('click', function() {
+        document.getElementById('fillSupremeAdmin')?.addEventListener('click', function() {
             const emailInput = document.getElementById('email');
             const passInput = document.getElementById('password');
             if (emailInput && passInput) {
                 emailInput.value = 'admin@gmail.com';
                 passInput.value = 'Admin@123';
-                this.textContent = 'Credentials Filled ✓';
-                setTimeout(() => { this.textContent = 'Auto-fill Login'; }, 2000);
+                this.textContent = 'Selected Supreme Admin ✓';
+                setTimeout(() => { this.textContent = 'Login as Supreme Admin'; }, 2000);
+            }
+        });
+
+        document.getElementById('fillMediumRole')?.addEventListener('click', function() {
+            const emailInput = document.getElementById('email');
+            const passInput = document.getElementById('password');
+            if (emailInput && passInput) {
+                emailInput.value = 'manager@gmail.com';
+                passInput.value = 'Manager@123';
+                this.textContent = 'Selected Store Manager ✓';
+                setTimeout(() => { this.textContent = 'Login as Store Manager'; }, 2000);
             }
         });
 
