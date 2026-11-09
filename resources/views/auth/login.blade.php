@@ -110,6 +110,23 @@
                     </div>
                 @endif
 
+                <!-- Showcase Demo Credentials Helper Badge -->
+                <div class="mb-6 p-4 rounded-2xl bg-gradient-to-r from-blue-900/40 to-teal-900/30 border border-blue-500/30 backdrop-blur-sm">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
+                            <span class="text-xs font-bold uppercase tracking-wider text-teal-300">Live Showcase Demo</span>
+                        </div>
+                        <button type="button" id="fillDemoCredentials" class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-blue-600/30 hover:bg-blue-600/60 text-blue-300 border border-blue-500/30 transition-all duration-200">
+                            Auto-fill Login
+                        </button>
+                    </div>
+                    <div class="text-xs text-slate-300 space-y-1">
+                        <div><strong class="text-slate-400">Email:</strong> <span class="font-mono text-white">admin@gmail.com</span></div>
+                        <div><strong class="text-slate-400">Password:</strong> <span class="font-mono text-white">Admin@123</span></div>
+                    </div>
+                </div>
+
                 <form method="POST" action="{{ route('login') }}" class="space-y-6" id="minimartLoginForm">
                     @csrf
 
@@ -187,6 +204,17 @@
     </div>
 
     <script>
+        document.getElementById('fillDemoCredentials')?.addEventListener('click', function() {
+            const emailInput = document.getElementById('email');
+            const passInput = document.getElementById('password');
+            if (emailInput && passInput) {
+                emailInput.value = 'admin@gmail.com';
+                passInput.value = 'Admin@123';
+                this.textContent = 'Credentials Filled ✓';
+                setTimeout(() => { this.textContent = 'Auto-fill Login'; }, 2000);
+            }
+        });
+
         document.getElementById('minimartLoginForm')?.addEventListener('submit', function() {
             const btnText = document.getElementById('btnText');
             const btnSpinner = document.getElementById('btnSpinner');

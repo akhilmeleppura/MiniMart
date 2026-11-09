@@ -1,10 +1,16 @@
 #!/bin/bash
 set -e
 
-# Run migrations
+# Run migrations automatically
 if [ "$RUN_MIGRATIONS" = "true" ]; then
     echo "Running database migrations..."
     php artisan migrate --force
+fi
+
+# Run seeders automatically for showcase demos
+if [ "$RUN_SEEDERS" = "true" ]; then
+    echo "Seeding showcase demo data..."
+    php artisan db:seed --force || true
 fi
 
 # Ensure storage directories and symlink exist
@@ -19,3 +25,5 @@ fi
 
 # Start Apache in foreground
 exec apache2-foreground
+
+
