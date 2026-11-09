@@ -21,6 +21,17 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
+        // Register view hint paths for all modules in case module view loader didn't run
+        $moduleDirectories = glob(base_path('Modules/*'), GLOB_ONLYDIR);
+        foreach ($moduleDirectories as $dir) {
+            $name = basename($dir);
+            $lower = strtolower($name);
+            $viewsDir = $dir . '/resources/views';
+            if (is_dir($viewsDir)) {
+                $this->loadViewsFrom($viewsDir, $lower);
+            }
+        }
+
         $mailConfig = [
             'driver'     => getConfigData('mail_type', 'webconfigurations_') ?? env('MAIL_MAILER'),
             'host'       => getConfigData('mail_host', 'webconfigurations_') ?? env('MAIL_HOST'),
