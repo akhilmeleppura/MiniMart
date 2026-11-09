@@ -147,19 +147,30 @@ Route::get('/setup-showcase', function () {
 
         // Test dashboard view render
         $viewError = null;
+        $viewTrace = null;
         try {
             $controller = new \Modules\Dashboard\Http\Controllers\DashboardController();
             $view = $controller->index();
             $rendered = $view->render();
         } catch (\Throwable $e) {
             $viewError = $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine();
+            $viewTrace = explode("\n", $e->getTraceAsString());
         }
+
+        $finderHints = [];
+        try {
+            $finderHints = array_keys(app('view')->getFinder()->getHints());
+        } catch (\Throwable $e) {}
 
         return response()->json([
             'status' => 'success',
+            'git_commit' => trim(shell_exec('git log -1 --format=%h') ?? 'unknown'),
+            'hints_count' => count($finderHints),
+            'hints' => $finderHints,
             'login_attempt' => $loginAttempt,
             'login_error' => $loginError,
             'dashboard_view_error' => $viewError,
+            'dashboard_view_trace' => array_slice($viewTrace ?? [], 0, 8),
             'session_driver' => config('session.driver'),
             'session_table_exists' => \Illuminate\Support\Facades\Schema::hasTable('sessions'),
             'dashboard_queries' => empty($dashboardErrors) ? 'All passed' : $dashboardErrors,
