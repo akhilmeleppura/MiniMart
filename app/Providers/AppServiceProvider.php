@@ -28,7 +28,8 @@ class AppServiceProvider extends ServiceProvider
             $lower = strtolower($name);
             $viewsDir = $dir . '/resources/views';
             if (is_dir($viewsDir)) {
-                $this->loadViewsFrom($viewsDir, $lower);
+                \Illuminate\Support\Facades\View::addNamespace($lower, $viewsDir);
+                \Illuminate\Support\Facades\View::addNamespace($name, $viewsDir);
             }
         }
 
