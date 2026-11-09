@@ -41,37 +41,45 @@ Route::get('/setup-showcase', function () {
             }
         } catch (\Throwable $e) {}
 
-        // Run migrations for all modules directly by path to guarantee all tables exist
-        $migrationPaths = [
-            'Modules/Customer/database/migrations',
-            'Modules/Category/database/migrations',
-            'Modules/Products/database/migrations',
-            'Modules/OrderManagement/database/migrations',
-            'Modules/CMS/database/migrations',
-            'Modules/StoreManagement/database/migrations',
-            'Modules/TaxManagement/database/migrations',
-            'Modules/ShippingMethode/database/migrations',
-            'Modules/PaymentManagement/database/migrations',
-            'Modules/PaymentMethod/database/migrations',
-            'Modules/PriceRuleManagement/database/migrations',
-            'Modules/ProductAttributes/database/migrations',
-            'Modules/Cart/database/migrations',
-            'Modules/UserPermission/database/migrations',
-            'Modules/WebConfigurationManagement/database/migrations',
-            'Modules/URLRewrite/database/migrations',
-            'Modules/NewsLetter/database/migrations',
-            'Modules/Dashboard/database/migrations',
-            'Modules/Base/database/migrations',
-            'Modules/Api/database/migrations',
+        // Run migrations for all modules directly using absolute path to guarantee execution
+        $modules = [
+            'StoreManagement',
+            'Category',
+            'Products',
+            'Customer',
+            'OrderManagement',
+            'CMS',
+            'TaxManagement',
+            'ShippingMethode',
+            'PaymentManagement',
+            'PaymentMethod',
+            'PriceRuleManagement',
+            'ProductAttributes',
+            'Cart',
+            'UserPermission',
+            'WebConfigurationManagement',
+            'URLRewrite',
+            'NewsLetter',
+            'Dashboard',
+            'Base',
+            'Api',
         ];
 
-        foreach ($migrationPaths as $path) {
-            try {
-                \Illuminate\Support\Facades\Artisan::call('migrate', [
-                    '--path' => $path,
-                    '--force' => true
-                ]);
-            } catch (\Throwable $e) {}
+        $migrationLogs = [];
+        foreach ($modules as $mod) {
+            $absPath = base_path("Modules/{$mod}/database/migrations");
+            if (is_dir($absPath)) {
+                try {
+                    \Illuminate\Support\Facades\Artisan::call('migrate', [
+                        '--path' => "Modules/{$mod}/database/migrations",
+                        '--realpath' => true,
+                        '--force' => true
+                    ]);
+                    $migrationLogs[$mod] = 'migrated';
+                } catch (\Throwable $e) {
+                    $migrationLogs[$mod] = 'error: ' . $e->getMessage();
+                }
+            }
         }
 
         \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
