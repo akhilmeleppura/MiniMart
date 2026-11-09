@@ -1,5 +1,5 @@
 <?php
-namespace Modules\UserPermission\App\Http\Middleware;
+namespace Modules\UserPermission\Http\Middleware;
 
 
 use Closure;

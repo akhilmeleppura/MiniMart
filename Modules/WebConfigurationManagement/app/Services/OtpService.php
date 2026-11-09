@@ -98,7 +98,7 @@ class OtpService
                 $mobileNumber,
                 [
                     'from' => $from,
-                    'body' => "Welcome to Store9 :) Your OTP is: {$otp}. It will expire in 10 minutes."
+                    'body' => "Welcome to MiniMart :) Your OTP is: {$otp}. It will expire in 10 minutes."
                 ]
             );
             Log::info('SMS sent successfully. SID: ' . $message->sid);

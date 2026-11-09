@@ -162,8 +162,8 @@ class OrderController extends Controller
                     'content' => json_encode([
                         "name" => $authUser->name,
                         "order_number" => $order->order_number,
-                        "support_url" => "https://store9.com/support",
-                        "company_name" => "Store9",
+                        "support_url" => "https://minimart.com/support",
+                        "company_name" => "MiniMart",
                         "order_date" => $order->created_at->toDateString(),
                     ], JSON_UNESCAPED_UNICODE),
                 ]);
@@ -352,11 +352,11 @@ class OrderController extends Controller
                 "cartid"        => $order->id,
                 "amount"        => $grandTotal,
                 "currency"      => $orderCurrencyCode,
-                "description"   => 'Store9 Sale Order #' . $order,
+                "description"   => 'MiniMart Sale Order #' . $order,
             ];
             $params["order"] = $orderDetails;
             $customerDetails = [
-                "ref" =>  "store9-customer-" . $orderCustomer->id,
+                "ref" =>  "minimart-customer-" . $orderCustomer->id,
                 "email" => $orderCustomer->email,
                 "name" => [
                     "forenames" => $orderCustomer->first_name,

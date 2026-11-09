@@ -17,7 +17,7 @@ $storeId = session('store_id');
         <!--begin::Mobile logo-->
         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
             <a href="{{ url('/') }}" class="d-lg-none">
-                <img alt="{{ config('app.name') }}" src="{{ asset('build-base/ktmt/media/logos/logo-1.svg') }}" class="h-25px" />
+                <img alt="MiniMart" src="{{ asset('images/minimart-logo.svg') }}" class="h-30px" />
             </a>
         </div>
         <div class="d-flex align-items-stretch justify-content-end gap-20 flex-lg-grow-1">
@@ -44,6 +44,14 @@ $storeId = session('store_id');
                     @endforeach
                 </div>
             </div>
+
+            <!--begin::Theme Switcher-->
+            <div class="d-flex align-items-center me-2">
+                <button type="button" id="minimartThemeToggle" class="btn btn-icon btn-custom btn-active-light btn-active-color-primary w-35px h-35px" title="Toggle Theme">
+                    <i class="ki-outline ki-night-day fs-2 text-white"></i>
+                </button>
+            </div>
+            <!--end::Theme Switcher-->
 
             <!--begin::User-->
             <div class="d-flex align-items-stretch" id="kt_header_user_menu_toggle">

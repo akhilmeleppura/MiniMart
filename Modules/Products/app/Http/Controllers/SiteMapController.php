@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Products\Jobs\SiteMapFeedExport;
 
-class SitemapController extends Controller
+class SiteMapController extends Controller
 {
     /**
      * Queue a sitemap generation process.

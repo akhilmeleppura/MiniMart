@@ -1,10 +1,15 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "minimart/admin-panel",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "MiniMart - Modern Laravel E-Commerce Management Platform",
+    "keywords": ["minimart", "ecommerce", "admin", "laravel"],
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Akhil S"
+        }
+    ],
     "require": {
         "php": "^8.2",
         "ext-dom": "*",

@@ -10,12 +10,12 @@
      data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true"
      data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="start"
      data-kt-drawer-toggle="#kt_aside_mobile_toggle">
-    <div class="aside-logo flex-column-auto" id="kt_aside_logo">
-        <a href="{{ url('/') }}">
-            <img alt="{{ config('app.name') }}" src="{{ asset('logo.svg') }}" class=" logo"
-                 style="border-radius: 5px;height: 45px;width: 150px;background-color: aliceblue;" />
+    <div class="aside-logo flex-column-auto px-5 py-4" id="kt_aside_logo">
+        <a href="{{ url('/') }}" class="d-flex align-items-center">
+            <img alt="MiniMart" src="{{ asset('images/minimart-logo-dark.svg') }}" class="h-35px logo-default" />
+            <img alt="MiniMart" src="{{ asset('images/minimart-icon.svg') }}" class="h-30px logo-minimize d-none" />
         </a>
-        <div id="kt_aside_toggle" class="btn btn-icon w-auto px-0 btn-active-color-primary aside-toggle me-n2"
+        <div id="kt_aside_toggle" class="btn btn-icon w-auto px-0 btn-active-color-primary aside-toggle me-n2 ms-auto"
              data-kt-toggle="true" data-kt-toggle-state="active" data-kt-toggle-target="body"
              data-kt-toggle-name="aside-minimize">
             <i class="ki-outline ki-double-left fs-1 rotate-180"></i>

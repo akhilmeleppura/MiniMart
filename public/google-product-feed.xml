@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
   <channel>
-    <title>Store-9</title>
-    <link>https://demo.store9.io</link>
+    <title>MiniMart</title>
+    <link>https://demo.minimart.io</link>
     <description>Google Product Feed for Your Store</description>
     <item>
       <g:id>1</g:id>
       <title>Tshirt</title>
       <description/>
-      <link>https://demo.store9.io/tshirt</link>
+      <link>https://demo.minimart.io/tshirt</link>
       <g:image_link/>
       <g:price>1,234.00 USD</g:price>
       <g:condition>new</g:condition>

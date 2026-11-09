@@ -6,43 +6,43 @@
         <div id="kt_content_container" class="container-xxl">
             <div class="row gy-5 g-xl-8">
                 <div class="col-xl-4">
-                    <div class="card card-flush card-hover animate__animated animate__fadeInUp">
-                        <div class="card-body d-flex align-items-center">
-                            <span class="svg-icon svg-icon-2hx svg-icon-primary me-5">
-                                {{-- Replace with your actual user icon SVG --}}
-                                <i class="bi bi-person"></i>
-                            </span>
+                    <div class="card card-flush card-hover animate__animated animate__fadeInUp p-6">
+                        <div class="card-body p-0 d-flex align-items-center justify-content-between">
                             <div>
-                                <div class="fw-bold fs-3">Total Users</div>
-                                <div class="fw-semibold text-muted">{{ $totalUsers }}</div>
+                                <div class="text-muted fw-bold text-uppercase fs-7 tracking-wider mb-1">Total Users</div>
+                                <div class="fs-2hx fw-extrabold text-gray-900">{{ $totalUsers }}</div>
+                                <div class="text-success fs-8 fw-semibold mt-1"><i class="bi bi-arrow-up-right me-1"></i>Active Store Members</div>
+                            </div>
+                            <div class="w-50px h-50px rounded-12 bg-light-primary d-flex align-items-center justify-content-center text-primary fs-2">
+                                <i class="bi bi-people-fill"></i>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-4">
-                    <div class="card card-flush card-hover animate__animated animate__fadeInUp">
-                        <div class="card-body d-flex align-items-center">
-                            <span class="svg-icon svg-icon-2hx svg-icon-success me-5">
-                                {{-- Replace with your actual product icon SVG --}}
-                                <i class="bi bi-cart"></i>
-                            </span>
+                    <div class="card card-flush card-hover animate__animated animate__fadeInUp p-6">
+                        <div class="card-body p-0 d-flex align-items-center justify-content-between">
                             <div>
-                                <div class="fw-bold fs-3">Total Products</div>
-                                <div class="fw-semibold text-muted">{{ $totalProducts }}</div>
+                                <div class="text-muted fw-bold text-uppercase fs-7 tracking-wider mb-1">Total Products</div>
+                                <div class="fs-2hx fw-extrabold text-gray-900">{{ $totalProducts }}</div>
+                                <div class="text-primary fs-8 fw-semibold mt-1"><i class="bi bi-bag-check me-1"></i>Catalog Items</div>
+                            </div>
+                            <div class="w-50px h-50px rounded-12 bg-light-info d-flex align-items-center justify-content-center text-info fs-2">
+                                <i class="bi bi-box-seam-fill"></i>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-4">
-                    <div class="card card-flush card-hover animate__animated animate__fadeInUp">
-                        <div class="card-body d-flex align-items-center">
-                            <span class="svg-icon svg-icon-2hx svg-icon-warning me-5">
-                                {{-- Replace with your actual order icon SVG --}}
-                                <i class="bi bi-basket-fill"></i>
-                            </span>
+                    <div class="card card-flush card-hover animate__animated animate__fadeInUp p-6">
+                        <div class="card-body p-0 d-flex align-items-center justify-content-between">
                             <div>
-                                <div class="fw-bold fs-3">Total Orders</div>
-                                <div class="fw-semibold text-muted">{{ $totalOrders }}</div>
+                                <div class="text-muted fw-bold text-uppercase fs-7 tracking-wider mb-1">Total Orders</div>
+                                <div class="fs-2hx fw-extrabold text-gray-900">{{ $totalOrders }}</div>
+                                <div class="text-teal fs-8 fw-semibold mt-1" style="color: #14B8A6;"><i class="bi bi-graph-up-arrow me-1"></i>Customer Purchases</div>
+                            </div>
+                            <div class="w-50px h-50px rounded-12 bg-light-success d-flex align-items-center justify-content-center text-success fs-2">
+                                <i class="bi bi-cart-check-fill"></i>
                             </div>
                         </div>
                     </div>

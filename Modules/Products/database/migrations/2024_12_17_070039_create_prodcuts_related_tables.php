@@ -11,42 +11,49 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_types', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique(); //'simple', 'configurable', 'virtual'
-            $table->text('description')->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('product_types')) {
+            Schema::create('product_types', function (Blueprint $table) {
+                $table->id();
+                $table->string('name')->unique(); //'simple', 'configurable', 'virtual'
+                $table->text('description')->nullable();
+                $table->timestamps();
+            });
+        }
 
+        if (!Schema::hasTable('products')) {
+            Schema::create('products', function (Blueprint $table) {
+                $table->id();
+                $table->string('sku')->unique();
+                $table->string('name');
+                $table->foreignId('product_type_id')->constrained('product_types')->onDelete('cascade');
+                $table->integer('is_in_stock')->nullable();
+                $table->text('url_key')->nullable();
+                $table->decimal('price', 10, 2);
+                $table->float('quantity');
+                $table->enum('status', ['active', 'inactive'])->default('active');
+                $table->timestamps();
+            });
+        }
 
-        Schema::create('products', function (Blueprint $table) {
-            $table->id();
-            $table->string('sku')->unique();
-            $table->string('name');
-            $table->foreignId('product_type_id')->constrained('product_types')->onDelete('cascade');
-            $table->integer('is_in_stock')->nullable();
-            $table->text('url_key')->nullable();
-            $table->decimal('price', 10, 2);
-            $table->float('quantity');
-            $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('product_image_types')) {
+            Schema::create('product_image_types', function (Blueprint $table) {
+                $table->id();
+                $table->string('name')->unique(); // Example: 'primary', 'thumbnail', 'gallery'
+                $table->text('description')->nullable(); // Description of the image type
+                $table->timestamps();
+            });
+        }
 
-        Schema::create('product_image_types', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique(); // Example: 'primary', 'thumbnail', 'gallery'
-            $table->text('description')->nullable(); // Description of the image type
-            $table->timestamps();
-        });
-
-        Schema::create('product_images', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
-            $table->foreignId('image_type_id')->constrained('product_image_types')->onDelete('cascade'); // Links to image types
-            $table->string('image_url'); // Image URL or file path
-            $table->boolean('is_default')->default(false); // Flag for default image (for main image)
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('product_images')) {
+            Schema::create('product_images', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+                $table->foreignId('image_type_id')->constrained('product_image_types')->onDelete('cascade'); // Links to image types
+                $table->string('image_url'); // Image URL or file path
+                $table->boolean('is_default')->default(false); // Flag for default image (for main image)
+                $table->timestamps();
+            });
+        }
     }
 
     /**

@@ -31,7 +31,7 @@
                                 </div>
                                 <div>
                                     <h5>Issued By</h5>
-                                    <p>Commerce9 FZCO, Dubai Digital Park, UAE</p>
+                                    <p>MiniMart FZCO, Dubai Digital Park, UAE</p>
                                 </div>
                             </div>
                         </div>

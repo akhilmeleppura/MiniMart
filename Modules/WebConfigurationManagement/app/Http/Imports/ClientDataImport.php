@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\WebConfigurationManagement\Imports;
+namespace Modules\WebConfigurationManagement\Http\Imports;
 
 use App\Models\MapProvider;
 use Google\Service\AdMob\App;

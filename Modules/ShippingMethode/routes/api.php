@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\ShippingMethode\Http\Controllers\ShippingMethodeController;
+use Modules\ShippingMethode\Http\Controllers\ShippingMethodController;
 
 /*
  *--------------------------------------------------------------------------
@@ -15,5 +15,5 @@ use Modules\ShippingMethode\Http\Controllers\ShippingMethodeController;
 */
 
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-    Route::apiResource('shippingmethode', ShippingMethodeController::class)->names('shippingmethode');
+    Route::apiResource('shippingmethode', ShippingMethodController::class)->names('shippingmethode');
 });

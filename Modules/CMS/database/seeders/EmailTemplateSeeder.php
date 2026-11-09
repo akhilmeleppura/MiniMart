@@ -32,7 +32,7 @@ class EmailTemplateSeeder extends Seeder
                 'label' => 'Customer Registration',
                 'subject' => 'Customer Registration',
                 'tags' => '{first_name},{last_name},{customer_code},{email}',
-                'content' => '<p>Dear Customer, {first_name} {last_name}</p><p>Thank you for registering with us! Your account has been successfully created.</p><p>Your Ref code is CODE: {customer_code}</p><p>We will send our new updates to your email: {email}</p><p>If you have any questions, feel free to contact us.</p><p>Best regards,<br>Store9</p>',
+                'content' => '<p>Dear Customer, {first_name} {last_name}</p><p>Thank you for registering with us! Your account has been successfully created.</p><p>Your Ref code is CODE: {customer_code}</p><p>We will send our new updates to your email: {email}</p><p>If you have any questions, feel free to contact us.</p><p>Best regards,<br>MiniMart</p>',
             ],
         ];
 

@@ -7,14 +7,16 @@
     <meta name="description" content="{{ config('app.name') }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <title>@yield('page-title') - {{ config('app.name') }}</title>
-    <link rel="icon" type="image/png" href="{{ asset('logo.png') }} ">
+    <title>@yield('page-title') - {{ config('app.name', 'MiniMart') }}</title>
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/minimart-icon.svg') }}">
+    <link rel="alternate icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="admin" />
-    <meta property="og:title" content="@yield('page-title') - {{ config('app.name') }}" />
+    <meta property="og:title" content="@yield('page-title') - {{ config('app.name', 'MiniMart') }}" />
     <meta property="og:url" content="{{ url('/') }}" />
-    <meta property="og:site_name" content="{{ config('app.name') }}" />
+    <meta property="og:site_name" content="{{ config('app.name', 'MiniMart') }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link rel="canonical" href="{{ url('/') }}" />
@@ -45,40 +47,143 @@
     {{-- Include Animate.css for additional animations --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <!--end::Global Theme Styles-->
-    <!--begin::Layout Themes(used by all pages)-->
-    <!--end::Layout Themes-->
+
     <script src="{{ asset('metronic/assets/plugins/global/plugins.bundle.js') }}"></script>
     <script src="{{ asset('metronic/assets/js/scripts.bundle.js') }}"></script>
     <script src="{{ asset('metronic/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-    {{-- Laravel Vite - CSS File --}}
-    {{-- {{ module_vite('build-base', 'Resources/assets/sass/app.scss') }} --}}
-
     {{ module_vite('build-base', 'resources/assets/sass/app.scss') }}
     {{ module_vite('build-base', 'resources/assets/sass/responsive.scss') }}
 
     @yield('custom-css-section')
-
-    <link rel="icon" type="image/x-icon" href="{{asset('assets/image/dispatchers.png ')}}" />
-
     @yield('initialize-js-section')
+
     <style>
-        .card-hover {
-            transition: all 0.3s ease;
+        /* MiniMart Design System Tokens */
+        :root {
+            --mm-primary: #2563EB;
+            --mm-primary-dark: #1D4ED8;
+            --mm-accent: #14B8A6;
+            --mm-bg: #F8FAFC;
+            --mm-surface: #FFFFFF;
+            --mm-text: #0F172A;
+            --mm-text-secondary: #64748B;
+            --mm-border: #E2E8F0;
+            --mm-success: #22C55E;
+            --mm-warning: #F59E0B;
+            --mm-danger: #EF4444;
         }
 
+        [data-bs-theme="dark"], body.dark-mode {
+            --mm-bg: #0F172A;
+            --mm-surface: #1E293B;
+            --mm-text: #F8FAFC;
+            --mm-text-secondary: #94A3B8;
+            --mm-border: #334155;
+            background-color: #0F172A !important;
+            color: #F8FAFC !important;
+        }
+
+        [data-bs-theme="dark"] .card, body.dark-mode .card,
+        [data-bs-theme="dark"] .content, body.dark-mode .content,
+        [data-bs-theme="dark"] .header, body.dark-mode .header {
+            background-color: #1E293B !important;
+            border-color: #334155 !important;
+            color: #F8FAFC !important;
+        }
+
+        /* Card Modernization */
+        .card-hover, .card {
+            border-radius: 0.85rem !important;
+            border: 1px solid var(--mm-border) !important;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
         .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -6px rgba(37, 99, 235, 0.12) !important;
         }
 
+        /* Modern Button System */
+        .btn-primary, .btn-mm-primary {
+            background-color: var(--mm-primary) !important;
+            border-color: var(--mm-primary) !important;
+            color: #FFFFFF !important;
+            font-weight: 600;
+            border-radius: 0.6rem;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            transition: all 0.2s ease;
+        }
+        .btn-primary:hover, .btn-mm-primary:hover {
+            background-color: var(--mm-primary-dark) !important;
+            border-color: var(--mm-primary-dark) !important;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-secondary, .btn-mm-secondary {
+            background-color: #F1F5F9 !important;
+            border-color: #E2E8F0 !important;
+            color: #475569 !important;
+            font-weight: 600;
+            border-radius: 0.6rem;
+        }
+
+        /* Table Modernization */
+        .table th {
+            font-size: 0.75rem !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+            color: var(--mm-text-secondary) !important;
+            border-bottom: 2px solid var(--mm-border) !important;
+        }
         .table tbody tr {
-            transition: background-color 0.3s ease;
+            transition: background-color 0.2s ease;
+        }
+        .table tbody tr:hover {
+            background-color: rgba(37, 99, 235, 0.03) !important;
         }
 
-        .table tbody tr:hover {
-            background-color: #f1f3fa;
+        /* Status Badges */
+        .badge-success, .badge-light-success {
+            background-color: rgba(34, 197, 94, 0.12) !important;
+            color: #15803D !important;
+            font-weight: 700;
+            border-radius: 20px;
+            padding: 0.35rem 0.75rem;
+        }
+        .badge-warning, .badge-light-warning {
+            background-color: rgba(245, 158, 11, 0.12) !important;
+            color: #B45309 !important;
+            font-weight: 700;
+            border-radius: 20px;
+            padding: 0.35rem 0.75rem;
+        }
+        .badge-danger, .badge-light-danger {
+            background-color: rgba(239, 68, 68, 0.12) !important;
+            color: #B91C1C !important;
+            font-weight: 700;
+            border-radius: 20px;
+            padding: 0.35rem 0.75rem;
+        }
+        .badge-primary, .badge-light-primary {
+            background-color: rgba(37, 99, 235, 0.12) !important;
+            color: #1D4ED8 !important;
+            font-weight: 700;
+            border-radius: 20px;
+            padding: 0.35rem 0.75rem;
+        }
+
+        /* Form Controls */
+        .form-control, .form-select {
+            border-radius: 0.6rem !important;
+            border: 1px solid var(--mm-border) !important;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--mm-primary) !important;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
         }
     </style>
 </head>
@@ -427,15 +532,25 @@
 
         highlightActiveMenuItem();
 
-        // Click function to toggle the accordion
-        $(".menu-accordion .menu-link").click(function () {
-            var parentAccordion = $(this).closest(".menu-accordion");
-            var subMenu = parentAccordion.find(".menu-sub-accordion");
-
-            // Toggle 'show' class for submenu visibility
-            subMenu.toggleClass('show');
-            // parentAccordion.toggleClass('active');
+        // Theme toggle handler for MiniMart
+        $('#minimartThemeToggle').on('click', function () {
+            var isDark = $('body').hasClass('dark-mode');
+            if (isDark) {
+                $('html').attr('data-bs-theme', 'light');
+                $('body').removeClass('dark-mode');
+                localStorage.setItem('mm-theme', 'light');
+            } else {
+                $('html').attr('data-bs-theme', 'dark');
+                $('body').addClass('dark-mode');
+                localStorage.setItem('mm-theme', 'dark');
+            }
         });
+
+        // Restore theme preference
+        if (localStorage.getItem('mm-theme') === 'dark') {
+            $('html').attr('data-bs-theme', 'dark');
+            $('body').addClass('dark-mode');
+        }
     });
 </script>
 
