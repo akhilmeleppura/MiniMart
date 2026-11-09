@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y \
     git \
     unzip \
     curl \
+    ca-certificates \
     libzip-dev \
     libpng-dev \
     libjpeg62-turbo-dev \
@@ -12,6 +13,7 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     nodejs \
     npm \
+    && update-ca-certificates \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_mysql zip bcmath xml \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
