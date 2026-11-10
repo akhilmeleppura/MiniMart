@@ -11,18 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products_meta', function (Blueprint $table) {
-            $table->id();
+        if (!Schema::hasTable('products_meta')) {
+            Schema::create('products_meta', function (Blueprint $table) {
+                $table->id();
                 $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
-            $table->foreignId('language_id')->nullable()->constrained('languages')->onDelete('set null');
-            $table->text('short_description')->nullable();
+                $table->foreignId('language_id')->nullable()->constrained('languages')->onDelete('set null');
+                $table->text('short_description')->nullable();
                 $table->text('description')->nullable();
                 $table->text('meta_title')->nullable();
-            $table->text('meta_image')->nullable();
-            $table->text('meta_keyword')->nullable();
+                $table->text('meta_image')->nullable();
+                $table->text('meta_keyword')->nullable();
                 $table->text('meta_description')->nullable();
                 $table->timestamps();
             });
+        }
     }
 
     /**

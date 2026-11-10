@@ -30,8 +30,10 @@ Route::get('switch-language/{locale}', function ($locale) {
 // One-click setup/seed route for showcase demos
 Route::get('/setup-showcase', function () {
     try {
-        // Run standard migrations
-        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        // Run standard migrations safely
+        try {
+            \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        } catch (\Throwable $e) {}
 
         // Direct DB alter safety check: ensure is_super_admin column exists
         try {
