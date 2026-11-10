@@ -16,6 +16,13 @@ class ImportPermissions extends Command
     protected $signature = 'permissions:import';
 
     /**
+     * The command aliases.
+     *
+     * @var array
+     */
+    protected $aliases = ['permission:import'];
+
+    /**
      * The console command description.
      *
      * @var string

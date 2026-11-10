@@ -14,7 +14,7 @@
 
     <!--begin::Logo-->
     <a href="{{ url($dashboardUrl)  }}">
-        <img src="{{ asset('build-base/ktmt/media/logos/app_logo.png') }}" alt="{{ config('app.name') }}" class="logo-default max-h-30px" width="100%" height="30" />
+        <img src="{{ asset('images/minimart-logo.svg') }}" alt="{{ config('app.name') }}" class="logo-default max-h-30px h-30px" />
     </a>
     <!--end::Logo-->
     <!--begin::Toolbar-->

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="grad_iphone15.svg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="rgba(0,0,0,0.35)"/>
+    </filter>
+  </defs>
+  <rect width="400" height="400" rx="24" fill="url(#grad_iphone15.svg)" />
+  <circle cx="200" cy="180" r="110" fill="#38BDF8" opacity="0.08" />
+  <g filter="url(#shadow)">
+    <rect x="150" y="90" width="100" height="190" rx="20" fill="#334155" stroke="#38BDF8" stroke-width="4"/><circle cx="200" cy="115" r="5" fill="#38BDF8"/><rect x="175" y="255" width="50" height="4" rx="2" fill="#94A3B8"/>
+  </g>
+  <rect x="30" y="30" width="110" height="26" rx="13" fill="#38BDF8" opacity="0.2" />
+  <text x="85" y="47" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="700" fill="#38BDF8" text-anchor="middle" letter-spacing="0.08em">ELECTRONICS</text>
+  <text x="200" y="330" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="19" font-weight="800" fill="#FFFFFF" text-anchor="middle">iPhone 15 Pro Max</text>
+  <text x="200" y="356" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600" fill="#38BDF8" text-anchor="middle" letter-spacing="0.05em">MiniMart Official Showcase</text>
+</svg>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="grad_cookware.svg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#334155" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="rgba(0,0,0,0.35)"/>
+    </filter>
+  </defs>
+  <rect width="400" height="400" rx="24" fill="url(#grad_cookware.svg)" />
+  <circle cx="200" cy="180" r="110" fill="#94A3B8" opacity="0.08" />
+  <g filter="url(#shadow)">
+    <path d="M130,150 L270,150 L260,240 Q200,260 140,240 Z" fill="#64748B" stroke="#E2E8F0" stroke-width="4"/><path d="M110,135 Q200,120 290,135 L280,150 L120,150 Z" fill="#94A3B8" stroke="#F1F5F9" stroke-width="3"/><circle cx="200" cy="115" r="8" fill="#CBD5E1"/><line x1="110" y1="165" x2="90" y2="165" stroke="#E2E8F0" stroke-width="6" stroke-linecap="round"/><line x1="290" y1="165" x2="310" y2="165" stroke="#E2E8F0" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <rect x="30" y="30" width="110" height="26" rx="13" fill="#94A3B8" opacity="0.2" />
+  <text x="85" y="47" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="700" fill="#94A3B8" text-anchor="middle" letter-spacing="0.08em">KITCHENWARE</text>
+  <text x="200" y="330" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="19" font-weight="800" fill="#FFFFFF" text-anchor="middle">Stainless Steel Pot Set</text>
+  <text x="200" y="356" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600" fill="#94A3B8" text-anchor="middle" letter-spacing="0.05em">MiniMart Official Showcase</text>
+</svg>

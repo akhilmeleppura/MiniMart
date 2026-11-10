@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="grad_coffee.svg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#78350F" />
+      <stop offset="100%" stop-color="#451A03" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="rgba(0,0,0,0.35)"/>
+    </filter>
+  </defs>
+  <rect width="400" height="400" rx="24" fill="url(#grad_coffee.svg)" />
+  <circle cx="200" cy="180" r="110" fill="#FBBF24" opacity="0.08" />
+  <g filter="url(#shadow)">
+    <rect x="135" y="130" width="110" height="120" rx="16" fill="#B45309" stroke="#FDE68A" stroke-width="4"/><path d="M245,150 Q280,150 280,180 Q280,210 245,210" fill="none" stroke="#FDE68A" stroke-width="6" stroke-linecap="round"/><path d="M165,100 Q175,80 165,65" fill="none" stroke="#FBBF24" stroke-width="3" stroke-linecap="round"/><path d="M190,100 Q200,80 190,65" fill="none" stroke="#FBBF24" stroke-width="3" stroke-linecap="round"/><path d="M215,100 Q225,80 215,65" fill="none" stroke="#FBBF24" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <rect x="30" y="30" width="110" height="26" rx="13" fill="#FBBF24" opacity="0.2" />
+  <text x="85" y="47" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="700" fill="#FBBF24" text-anchor="middle" letter-spacing="0.08em">GROCERIES</text>
+  <text x="200" y="330" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="19" font-weight="800" fill="#FFFFFF" text-anchor="middle">Organic Arabica Coffee</text>
+  <text x="200" y="356" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600" fill="#FBBF24" text-anchor="middle" letter-spacing="0.05em">MiniMart Official Showcase</text>
+</svg>

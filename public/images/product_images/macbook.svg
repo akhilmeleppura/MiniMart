@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="grad_macbook.svg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E1B4B" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="rgba(0,0,0,0.35)"/>
+    </filter>
+  </defs>
+  <rect width="400" height="400" rx="24" fill="url(#grad_macbook.svg)" />
+  <circle cx="200" cy="180" r="110" fill="#818CF8" opacity="0.08" />
+  <g filter="url(#shadow)">
+    <rect x="110" y="110" width="180" height="115" rx="8" fill="#1E293B" stroke="#818CF8" stroke-width="4"/><polygon points="90,235 310,235 295,245 105,245" fill="#475569"/><rect x="180" y="155" width="40" height="30" rx="4" fill="#818CF8" opacity="0.6"/>
+  </g>
+  <rect x="30" y="30" width="110" height="26" rx="13" fill="#818CF8" opacity="0.2" />
+  <text x="85" y="47" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="700" fill="#818CF8" text-anchor="middle" letter-spacing="0.08em">ELECTRONICS</text>
+  <text x="200" y="330" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="19" font-weight="800" fill="#FFFFFF" text-anchor="middle">MacBook Pro M3</text>
+  <text x="200" y="356" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600" fill="#818CF8" text-anchor="middle" letter-spacing="0.05em">MiniMart Official Showcase</text>
+</svg>

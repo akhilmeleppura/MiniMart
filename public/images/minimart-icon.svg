@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+  <defs>
+    <linearGradient id="mm-icon-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#14B8A6"/>
+    </linearGradient>
+    <filter id="mm-icon-shadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#2563EB" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <g filter="url(#mm-icon-shadow)">
+    <rect x="6" y="6" width="52" height="52" rx="14" fill="url(#mm-icon-grad)" />
+    <path d="M23 16 C23 10, 41 10, 41 16" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" fill="none" />
+    <path d="M20 28 L26 42 L32 32 L38 42 L44 28" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <circle cx="32" cy="23" r="3" fill="#FFFFFF" />
+  </g>
+</svg>

@@ -165,14 +165,19 @@ Route::get('/setup-showcase', function () {
         return response()->json([
             'status' => 'success',
             'git_commit' => trim(shell_exec('git log -1 --format=%h') ?? 'unknown'),
-            'hints_count' => count($finderHints),
-            'hints' => $finderHints,
+            'counts' => [
+                'users' => \App\Models\User::count(),
+                'customers' => \Illuminate\Support\Facades\Schema::hasTable('customers') ? DB::table('customers')->count() : 0,
+                'products' => \Illuminate\Support\Facades\Schema::hasTable('products') ? DB::table('products')->count() : 0,
+                'categories' => \Illuminate\Support\Facades\Schema::hasTable('categories') ? DB::table('categories')->count() : 0,
+                'orders' => \Illuminate\Support\Facades\Schema::hasTable('orders') ? DB::table('orders')->count() : 0,
+                'permissions' => \Illuminate\Support\Facades\Schema::hasTable('permissions') ? DB::table('permissions')->count() : 0,
+                'roles' => \Illuminate\Support\Facades\Schema::hasTable('roles') ? DB::table('roles')->count() : 0,
+                'stores' => \Illuminate\Support\Facades\Schema::hasTable('stores') ? DB::table('stores')->count() : 0,
+            ],
             'login_attempt' => $loginAttempt,
             'login_error' => $loginError,
             'dashboard_view_error' => $viewError,
-            'dashboard_view_trace' => array_slice($viewTrace ?? [], 0, 8),
-            'session_driver' => config('session.driver'),
-            'session_table_exists' => \Illuminate\Support\Facades\Schema::hasTable('sessions'),
             'dashboard_queries' => empty($dashboardErrors) ? 'All passed' : $dashboardErrors,
         ]);
     } catch (\Throwable $e) {

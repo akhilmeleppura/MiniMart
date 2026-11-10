@@ -53,24 +53,11 @@ class DatabaseSeeder extends Seeder
             $this->command->warn('Role assignment skipped: ' . $e->getMessage());
         }
 
-        // 3. Run Module Seeders for showcase display if tables are empty
-        $seeders = [
-            \Modules\CMS\Database\Seeders\LanguageTableSeeder::class,
-            \Modules\Products\Database\Seeders\ProductTypeSeeder::class,
-            \Modules\StoreManagement\Database\Seeders\StoresTableSeeder::class,
-            \Modules\OrderManagement\Database\Seeders\OrderStatusSeeder::class,
-            \Modules\OrderManagement\Database\Seeders\PaymentStatusSeeder::class,
-            \Modules\Customer\Database\Seeders\CustomerGroupSeeder::class,
-        ];
-
-        foreach ($seeders as $seeder) {
-            if (class_exists($seeder)) {
-                try {
-                    $this->call($seeder);
-                } catch (\Throwable $e) {
-                    $this->command->warn("Notice: Seeder {$seeder} skipped: " . $e->getMessage());
-                }
-            }
+        // 3. Complete Showcase Demo Data (Permissions, Categories, Products, Customers, Orders, Banners, Stores)
+        try {
+            $this->call(ShowcaseDemoSeeder::class);
+        } catch (\Throwable $e) {
+            $this->command->warn('ShowcaseDemoSeeder notice: ' . $e->getMessage());
         }
     }
 }

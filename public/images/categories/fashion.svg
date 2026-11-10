@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="cat_grad_fashion.svg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#DB2777" />
+      <stop offset="100%" stop-color="#BE185D" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" rx="20" fill="url(#cat_grad_fashion.svg)" />
+  <circle cx="700" cy="200" r="180" fill="#FFFFFF" opacity="0.06" />
+  <circle cx="100" cy="50" r="100" fill="#FFFFFF" opacity="0.06" />
+  <text x="60" y="190" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="44" font-weight="900" fill="#FFFFFF">Fashion</text>
+  <text x="60" y="240" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="500" fill="rgba(255,255,255,0.85)">Explore top rated items & exclusive discounts at MiniMart</text>
+  <rect x="60" y="270" width="160" height="42" rx="21" fill="#FFFFFF" />
+  <text x="140" y="297" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" fill="#DB2777" text-anchor="middle">SHOP NOW →</text>
+</svg>
