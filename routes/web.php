@@ -104,6 +104,9 @@ Route::get('/setup-showcase', function () {
         }
 
         \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+        try {
+            \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\ShowcaseDemoSeeder', '--force' => true]);
+        } catch (\Throwable $e) {}
         
         $admin = \App\Models\User::updateOrCreate(
             ['email' => 'admin@gmail.com'],

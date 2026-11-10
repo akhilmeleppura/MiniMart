@@ -180,24 +180,49 @@ class ShowcaseDemoSeeder extends Seeder
 
     protected function setupProductTypes(): void
     {
-        $this->command->info('3. Setting up Product Types...');
+        $this->command->info('3. Setting up Product Types & Image Types...');
         try {
             if (\Illuminate\Support\Facades\Schema::hasTable('product_types')) {
                 $types = [
-                    ['code' => 'simple', 'name' => 'Simple Product'],
-                    ['code' => 'configurable', 'name' => 'Configurable Product'],
-                    ['code' => 'virtual', 'name' => 'Virtual Product'],
-                    ['code' => 'bundle', 'name' => 'Bundle Product'],
+                    ['name' => 'simple', 'description' => 'Simple Physical Product'],
+                    ['name' => 'configurable', 'description' => 'Configurable Product with Variants'],
+                    ['name' => 'virtual', 'description' => 'Digital / Virtual Product'],
+                    ['name' => 'bundle', 'description' => 'Product Bundle Set'],
                 ];
                 foreach ($types as $t) {
-                    DB::table('product_types')->updateOrInsert(['code' => $t['code']], array_merge($t, [
-                        'status' => 1,
-                        'created_at' => now(),
-                        'updated_at' => now()
-                    ]));
+                    $hasType = DB::table('product_types')->where('name', $t['name'])->first();
+                    if (!$hasType) {
+                        DB::table('product_types')->insert([
+                            'name' => $t['name'],
+                            'description' => $t['description'],
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+                    }
                 }
             }
-        } catch (\Throwable $e) {}
+
+            if (\Illuminate\Support\Facades\Schema::hasTable('product_image_types')) {
+                $imgTypes = [
+                    ['name' => 'primary', 'description' => 'Primary showcase product image'],
+                    ['name' => 'thumbnail', 'description' => 'Product thumbnail image'],
+                    ['name' => 'gallery', 'description' => 'Product gallery image'],
+                ];
+                foreach ($imgTypes as $it) {
+                    $hasIt = DB::table('product_image_types')->where('name', $it['name'])->first();
+                    if (!$hasIt) {
+                        DB::table('product_image_types')->insert([
+                            'name' => $it['name'],
+                            'description' => $it['description'],
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+                    }
+                }
+            }
+        } catch (\Throwable $e) {
+            $this->command->warn('Product types notice: ' . $e->getMessage());
+        }
     }
 
     protected function setupCategories(): void
@@ -427,71 +452,93 @@ class ShowcaseDemoSeeder extends Seeder
                 ],
             ];
 
+            $productTypeId = DB::table('product_types')->where('name', 'simple')->value('id')
+                          ?? DB::table('product_types')->value('id')
+                          ?? 1;
+            $imageTypeId = DB::table('product_image_types')->value('id') ?? 1;
+
             foreach ($items as $item) {
-                $existingId = DB::table('products')->where('sku', $item['sku'])->value('id');
+                try {
+                    $existingId = DB::table('products')->where('sku', $item['sku'])->value('id');
 
-                $productData = [
-                    'product_type_id' => $productTypeId,
-                    'name' => $item['name'],
-                    'sku' => $item['sku'],
-                    'price' => $item['price'],
-                    'special_price' => $item['special_price'],
-                    'special_price_from' => now()->subDays(10),
-                    'special_price_to' => now()->addDays(30),
-                    'quantity' => $item['qty'],
-                    'status' => 'active',
-                    'is_in_stock' => 1,
-                    'url_key' => Str::slug($item['name']),
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
+                    $productData = [
+                        'product_type_id' => $productTypeId,
+                        'name' => $item['name'],
+                        'sku' => $item['sku'],
+                        'price' => $item['price'],
+                        'quantity' => $item['qty'],
+                        'status' => 'active',
+                        'is_in_stock' => 1,
+                        'url_key' => Str::slug($item['name']),
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
 
-                if ($existingId) {
-                    DB::table('products')->where('id', $existingId)->update($productData);
-                    $productId = $existingId;
-                } else {
-                    $productId = DB::table('products')->insertGetId($productData);
-                }
-
-                // Product Images
-                if (\Illuminate\Support\Facades\Schema::hasTable('product_images')) {
-                    DB::table('product_images')->updateOrInsert(
-                        ['product_id' => $productId, 'image_url' => $item['img']],
-                        [
-                            'image_type_id' => 1,
-                            'is_default' => 1,
-                            'created_at' => now(),
-                            'updated_at' => now(),
-                        ]
-                    );
-                }
-
-                // Products Meta
-                if (\Illuminate\Support\Facades\Schema::hasTable('products_meta')) {
-                    DB::table('products_meta')->updateOrInsert(
-                        ['product_id' => $productId, 'language_id' => 1],
-                        [
-                            'description' => $item['desc'],
-                            'short_description' => $item['name'] . ' - MiniMart Guaranteed Quality.',
-                            'meta_title' => $item['name'] . ' - Buy Online',
-                            'meta_keyword' => strtolower(str_replace(' ', ',', $item['name'])),
-                            'meta_description' => $item['desc'],
-                            'created_at' => now(),
-                            'updated_at' => now(),
-                        ]
-                    );
-                }
-
-                // Link to category in category_products
-                if (\Illuminate\Support\Facades\Schema::hasTable('category_products') && \Illuminate\Support\Facades\Schema::hasTable('categories')) {
-                    $catId = DB::table('categories')->where('url_key', $item['cat_slug'])->value('id');
-                    if (!$catId) {
-                        $catId = DB::table('categories')->first()->id ?? 1;
+                    if (\Illuminate\Support\Facades\Schema::hasColumn('products', 'special_price')) {
+                        $productData['special_price'] = $item['special_price'];
                     }
-                    DB::table('category_products')->updateOrInsert(
-                        ['product_id' => $productId, 'category_id' => $catId],
-                        ['created_at' => now(), 'updated_at' => now()]
-                    );
+                    if (\Illuminate\Support\Facades\Schema::hasColumn('products', 'special_price_from')) {
+                        $productData['special_price_from'] = now()->subDays(10);
+                        $productData['special_price_to'] = now()->addDays(30);
+                    }
+
+                    if ($existingId) {
+                        DB::table('products')->where('id', $existingId)->update($productData);
+                        $productId = $existingId;
+                    } else {
+                        $productId = DB::table('products')->insertGetId($productData);
+                    }
+
+                    // Product Images
+                    if (\Illuminate\Support\Facades\Schema::hasTable('product_images')) {
+                        try {
+                            $hasImg = DB::table('product_images')->where('product_id', $productId)->first();
+                            if (!$hasImg) {
+                                DB::table('product_images')->insert([
+                                    'product_id' => $productId,
+                                    'image_type_id' => $imageTypeId,
+                                    'image_url' => $item['img'],
+                                    'is_default' => 1,
+                                    'created_at' => now(),
+                                    'updated_at' => now(),
+                                ]);
+                            }
+                        } catch (\Throwable $e) {}
+                    }
+
+                    // Products Meta
+                    if (\Illuminate\Support\Facades\Schema::hasTable('products_meta')) {
+                        try {
+                            DB::table('products_meta')->updateOrInsert(
+                                ['product_id' => $productId, 'language_id' => 1],
+                                [
+                                    'description' => $item['desc'],
+                                    'short_description' => $item['name'] . ' - MiniMart Guaranteed Quality.',
+                                    'meta_title' => $item['name'] . ' - Buy Online',
+                                    'meta_keyword' => strtolower(str_replace(' ', ',', $item['name'])),
+                                    'meta_description' => $item['desc'],
+                                    'created_at' => now(),
+                                    'updated_at' => now(),
+                                ]
+                            );
+                        } catch (\Throwable $e) {}
+                    }
+
+                    // Link to category in category_products
+                    if (\Illuminate\Support\Facades\Schema::hasTable('category_products') && \Illuminate\Support\Facades\Schema::hasTable('categories')) {
+                        try {
+                            $catId = DB::table('categories')->where('url_key', $item['cat_slug'])->value('id');
+                            if (!$catId) {
+                                $catId = DB::table('categories')->first()->id ?? 1;
+                            }
+                            DB::table('category_products')->updateOrInsert(
+                                ['product_id' => $productId, 'category_id' => $catId],
+                                ['created_at' => now(), 'updated_at' => now()]
+                            );
+                        } catch (\Throwable $e) {}
+                    }
+                } catch (\Throwable $e) {
+                    $this->command->warn("Product seeder item error: " . $e->getMessage());
                 }
             }
         } catch (\Throwable $e) {
@@ -526,47 +573,49 @@ class ShowcaseDemoSeeder extends Seeder
             ];
 
             foreach ($customers as $idx => $c) {
-                $code = 'CUST-' . str_pad($idx + 1, 4, '0', STR_PAD_LEFT);
-                $existing = DB::table('customers')->where('email', $c['email'])->first();
+                try {
+                    $code = 'CUST-' . str_pad($idx + 1, 4, '0', STR_PAD_LEFT);
+                    $existing = DB::table('customers')->where('email', $c['email'])->first();
 
-                $custData = [
-                    'customer_code' => $code,
-                    'first_name' => $c['first'],
-                    'last_name' => $c['last'],
-                    'email' => $c['email'],
-                    'phone' => $c['phone'],
-                    'password' => Hash::make('password123'),
-                    'is_active' => 1,
-                    'created_at' => now()->subDays(rand(1, 120)),
-                    'updated_at' => now(),
-                ];
+                    $custData = [
+                        'customer_code' => $code,
+                        'first_name' => $c['first'],
+                        'last_name' => $c['last'],
+                        'email' => $c['email'],
+                        'phone' => $c['phone'],
+                        'password' => Hash::make('password123'),
+                        'is_active' => 1,
+                        'created_at' => now()->subDays(rand(1, 120)),
+                        'updated_at' => now(),
+                    ];
 
-                if ($existing) {
-                    DB::table('customers')->where('id', $existing->id)->update($custData);
-                    $custId = $existing->id;
-                } else {
-                    $custId = DB::table('customers')->insertGetId($custData);
-                }
+                    if ($existing) {
+                        DB::table('customers')->where('id', $existing->id)->update($custData);
+                        $custId = $existing->id;
+                    } else {
+                        $custId = DB::table('customers')->insertGetId($custData);
+                    }
 
-                // Address
-                if (\Illuminate\Support\Facades\Schema::hasTable('customer_addresses')) {
-                    DB::table('customer_addresses')->updateOrInsert(
-                        ['customer_id' => $custId, 'type' => 'shipping'],
-                        [
-                            'first_name' => $c['first'],
-                            'last_name' => $c['last'],
-                            'email' => $c['email'],
-                            'phone' => $c['phone'],
-                            'address_line1' => (100 + $idx * 15) . ' Commerce Avenue',
-                            'city' => $c['city'],
-                            'state' => $c['state'],
-                            'postal_code' => '90' . rand(100, 999),
-                            'country' => 'USA',
-                            'is_default' => 1,
-                            'created_at' => now(),
-                            'updated_at' => now(),
-                        ]
-                    );
+                    // Address
+                    if (\Illuminate\Support\Facades\Schema::hasTable('customer_addresses')) {
+                        try {
+                            DB::table('customer_addresses')->updateOrInsert(
+                                ['customer_id' => $custId, 'type' => 'shipping'],
+                                [
+                                    'address_line1' => (100 + $idx * 15) . ' Commerce Avenue',
+                                    'city' => $c['city'],
+                                    'state' => $c['state'],
+                                    'postal_code' => '90' . rand(100, 999),
+                                    'country' => 'USA',
+                                    'is_default' => 1,
+                                    'created_at' => now(),
+                                    'updated_at' => now(),
+                                ]
+                            );
+                        } catch (\Throwable $e) {}
+                    }
+                } catch (\Throwable $e) {
+                    $this->command->warn("Customer seeder item error: " . $e->getMessage());
                 }
             }
         } catch (\Throwable $e) {
@@ -609,27 +658,62 @@ class ShowcaseDemoSeeder extends Seeder
             ];
 
             foreach ($orderTemplates as $idx => $tmpl) {
-                $cust = $customerList[$idx % $customerList->count()];
-                $orderDate = now()->subDays($tmpl['days_ago']);
+                try {
+                    $cust = $customerList[$idx % $customerList->count()];
+                    $orderDate = now()->subDays($tmpl['days_ago']);
 
-                DB::table('orders')->updateOrInsert(
-                    ['order_number' => $tmpl['num']],
-                    [
+                    $orderData = [
                         'customer_id' => $cust->id,
                         'customer_code' => $cust->customer_code ?? ('CUST-' . $cust->id),
-                        'first_name' => $cust->first_name,
-                        'last_name' => $cust->last_name,
+                        'first_name' => $cust->first_name ?? 'Showcase',
+                        'last_name' => $cust->last_name ?? 'Customer',
                         'email' => $cust->email,
-                        'phone' => $cust->phone,
+                        'phone' => $cust->phone ?? '+1 555-0100',
                         'order_status' => $tmpl['status'],
                         'payment_status' => $tmpl['pay'],
                         'shipping_method_name' => $tmpl['ship'],
                         'shipping_cost' => 15.00,
-                        'total' => $tmpl['total'],
+                        'is_active' => 1,
+                        'guest_is_active' => 1,
                         'created_at' => $orderDate,
                         'updated_at' => $orderDate,
-                    ]
-                );
+                    ];
+
+                    if (\Illuminate\Support\Facades\Schema::hasColumn('orders', 'total')) {
+                        $orderData['total'] = $tmpl['total'];
+                    }
+
+                    $existingOrder = DB::table('orders')->where('order_number', $tmpl['num'])->first();
+                    if ($existingOrder) {
+                        DB::table('orders')->where('id', $existingOrder->id)->update($orderData);
+                        $orderId = $existingOrder->id;
+                    } else {
+                        $orderData['order_number'] = $tmpl['num'];
+                        $orderId = DB::table('orders')->insertGetId($orderData);
+                    }
+
+                    // Order Items
+                    if (\Illuminate\Support\Facades\Schema::hasTable('order_items')) {
+                        try {
+                            $hasItem = DB::table('order_items')->where('order_id', $orderId)->first();
+                            if (!$hasItem) {
+                                DB::table('order_items')->insert([
+                                    'order_id' => $orderId,
+                                    'product_sku' => 'MM-ITEM-' . ($idx + 1),
+                                    'product_name' => 'Demo Order Item #' . ($idx + 1),
+                                    'price' => $tmpl['total'],
+                                    'quantity' => 1,
+                                    'total' => $tmpl['total'],
+                                    'product_status' => 'active',
+                                    'created_at' => $orderDate,
+                                    'updated_at' => $orderDate,
+                                ]);
+                            }
+                        } catch (\Throwable $e) {}
+                    }
+                } catch (\Throwable $e) {
+                    $this->command->warn("Order seeder item error: " . $e->getMessage());
+                }
             }
         } catch (\Throwable $e) {
             $this->command->warn('Orders seeder notice: ' . $e->getMessage());
